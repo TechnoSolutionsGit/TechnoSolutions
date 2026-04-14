@@ -1,5 +1,3 @@
-
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -34,6 +32,7 @@
   --gray-900: #111827;
   --success: #10B981;
   --warning: #F59E0B;
+  --error: #EF4444;
   --radius: 16px;
   --radius-sm: 10px;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
@@ -141,6 +140,11 @@ body {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .animate-on-scroll {
@@ -1191,6 +1195,18 @@ body {
   color: var(--gray-400);
 }
 
+.contact-item-text a {
+  font-size: 0.88rem;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-item-text a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
 .contact-form {
   background: var(--white);
   border-radius: var(--radius);
@@ -1249,6 +1265,54 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+/* Form status messages */
+.form-status {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin-top: 16px;
+}
+
+.form-status.success {
+  display: flex;
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.form-status.error {
+  display: flex;
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.form-status.sending {
+  display: flex;
+  background: var(--blue-light);
+  color: var(--primary-dark);
+  border: 1px solid #C7D2FE;
+}
+
+.btn-loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
 }
 
 /* Footer */
@@ -2055,7 +2119,7 @@ body {
           <div class="contact-item-icon" style="background:#F5F3FF;">✉️</div>
           <div class="contact-item-text">
             <h4>Courriel</h4>
-            <p>info@technosolutions.ca</p>
+            <a href="mailto:technosolutions_support@protonmail.com">technosolutions_support@protonmail.com</a>
           </div>
         </div>
         
@@ -2076,40 +2140,58 @@ body {
         </div>
       </div>
       
-      <form class="contact-form animate-on-scroll" onsubmit="handleSubmit(event)">
+      <form class="contact-form animate-on-scroll" id="contactForm">
         <h3>Envoyez-nous un message</h3>
+        
+        <!-- 
+          ╔══════════════════════════════════════════════════════════════╗
+          ║  IMPORTANT: Web3Forms yapılandırması                       ║
+          ║                                                            ║
+          ║  1. https://web3forms.com adresine gidin                   ║
+          ║  2. E-posta olarak girin:                                  ║
+          ║     technosolutions_support@protonmail.com                 ║
+          ║  3. Size verilen access key'i aşağıdaki                    ║
+          ║     "59117c77-b38b-4819-96de-22e7f76a5d9f" yerine yapıştırın               ║
+          ╚══════════════════════════════════════════════════════════════╝
+        -->
+        <input type="hidden" name="access_key" id="web3formsKey" value="59117c77-b38b-4819-96de-22e7f76a5d9f">
+        <input type="hidden" name="subject" value="Nouveau message — TechnoSolutions">
+        <input type="hidden" name="from_name" value="TechnoSolutions Website">
+        <input type="checkbox" name="botcheck" style="display:none;">
         
         <div class="form-row">
           <div class="form-group">
             <label for="name">Nom complet</label>
-            <input type="text" id="name" placeholder="Votre nom" required>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required>
           </div>
           <div class="form-group">
             <label for="email">Courriel</label>
-            <input type="email" id="email" placeholder="votre@courriel.com" required>
+            <input type="email" id="email" name="email" placeholder="votre@courriel.com" required>
           </div>
         </div>
         
         <div class="form-group">
-          <label for="subject">Sujet</label>
-          <select id="subject">
+          <label for="subject_type">Sujet</label>
+          <select id="subject_type" name="subject_type">
             <option value="">Choisir un sujet</option>
-            <option value="reparation">Demande de réparation</option>
-            <option value="support">Support technique</option>
-            <option value="abonnement">Abonnement mensuel</option>
-            <option value="investissement">Opportunité d'investissement</option>
-            <option value="autre">Autre</option>
+            <option value="Demande de réparation">Demande de réparation</option>
+            <option value="Support technique">Support technique</option>
+            <option value="Abonnement mensuel">Abonnement mensuel</option>
+            <option value="Opportunité d'investissement">Opportunité d'investissement</option>
+            <option value="Autre">Autre</option>
           </select>
         </div>
         
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea id="message" placeholder="Décrivez votre besoin..." required></textarea>
+          <textarea id="message" name="message" placeholder="Décrivez votre besoin..." required></textarea>
         </div>
         
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+        <button type="submit" class="btn btn-primary" id="submitBtn" style="width:100%;justify-content:center;">
           Envoyer le message →
         </button>
+        
+        <div class="form-status" id="formStatus"></div>
       </form>
     </div>
   </div>
@@ -2140,7 +2222,7 @@ body {
       <div class="footer-col">
         <h4>Contact</h4>
         <a href="#contact">Nous contacter</a>
-        <a href="#contact">info@technosolutions.ca</a>
+        <a href="mailto:technosolutions_support@protonmail.com">technosolutions_support@protonmail.com</a>
         <a href="#tarifs">Nos tarifs</a>
       </div>
     </div>
@@ -2152,6 +2234,24 @@ body {
 </footer>
 
 <script>
+// ============================================================
+// WEB3FORMS CONFIGURATION
+// ============================================================
+// Bu formun çalışması için Web3Forms access key gereklidir:
+//
+// 1. https://web3forms.com adresine gidin
+// 2. "technosolutions_support@protonmail.com" e-postanızı girin
+// 3. E-postanıza gelen access key'i kopyalayın
+// 4. Aşağıdaki satırdaki değeri güncelleyin:
+//
+const WEB3FORMS_ACCESS_KEY = "59117c77-b38b-4819-96de-22e7f76a5d9f";
+// ============================================================
+
+// Set access key on load
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('web3formsKey').value = WEB3FORMS_ACCESS_KEY;
+});
+
 // Header scroll effect
 const header = document.getElementById('header');
 window.addEventListener('scroll', () => {
@@ -2198,21 +2298,79 @@ function toggleFaq(button) {
   }
 }
 
-// Form submit
-function handleSubmit(e) {
+// ============================================================
+// CONTACT FORM — Web3Forms ile e-posta gönderimi
+// ============================================================
+const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+const formStatus = document.getElementById('formStatus');
+
+contactForm.addEventListener('submit', async function(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '✓ Message envoyé !';
-  btn.style.background = 'var(--success)';
-  btn.style.boxShadow = '0 4px 15px rgba(16,185,129,0.35)';
   
-  setTimeout(() => {
-    btn.innerHTML = originalText;
-    btn.style.background = '';
-    btn.style.boxShadow = '';
-    e.target.reset();
-  }, 3000);
+  // Access key kontrolü
+  if (WEB3FORMS_ACCESS_KEY === "59117c77-b38b-4819-96de-22e7f76a5d9f") {
+    showStatus('error', '⚠️ Web3Forms access key henüz yapılandırılmamış. Lütfen web3forms.com adresinden bir anahtar alın ve koda ekleyin.');
+    return;
+  }
+  
+  // Gönderim durumu
+  submitBtn.classList.add('btn-loading');
+  submitBtn.innerHTML = '<span class="spinner"></span> Envoi en cours...';
+  showStatus('sending', '⏳ Votre message est en cours d\'envoi...');
+  
+  try {
+    const formData = new FormData(contactForm);
+    
+    // Web3Forms API'ye gönder
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // Başarılı
+      showStatus('success', '✅ Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.');
+      contactForm.reset();
+      // Access key'i tekrar ayarla (form reset sonrası)
+      document.getElementById('web3formsKey').value = WEB3FORMS_ACCESS_KEY;
+      
+      submitBtn.innerHTML = '✓ Message envoyé !';
+      submitBtn.style.background = 'var(--success)';
+      submitBtn.style.boxShadow = '0 4px 15px rgba(16,185,129,0.35)';
+      
+      setTimeout(() => {
+        submitBtn.innerHTML = 'Envoyer le message →';
+        submitBtn.style.background = '';
+        submitBtn.style.boxShadow = '';
+        submitBtn.classList.remove('btn-loading');
+      }, 4000);
+    } else {
+      throw new Error(result.message || 'Une erreur est survenue');
+    }
+    
+  } catch (error) {
+    console.error('Form submission error:', error);
+    showStatus('error', '❌ Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous contacter directement à technosolutions_support@protonmail.com');
+    
+    submitBtn.innerHTML = 'Envoyer le message →';
+    submitBtn.classList.remove('btn-loading');
+  }
+});
+
+function showStatus(type, message) {
+  formStatus.className = 'form-status ' + type;
+  formStatus.textContent = message;
+  formStatus.style.display = 'flex';
+  
+  // Başarılı mesajı 8 saniye sonra gizle
+  if (type === 'success') {
+    setTimeout(() => {
+      formStatus.style.display = 'none';
+    }, 8000);
+  }
 }
 
 // Scroll animations
@@ -2224,7 +2382,6 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, index) => {
     if (entry.isIntersecting) {
-      // Add stagger delay based on sibling position
       const siblings = entry.target.parentElement.querySelectorAll('.animate-on-scroll');
       let siblingIndex = 0;
       siblings.forEach((sib, i) => {
@@ -2263,4 +2420,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 </body>
 </html>
-```
