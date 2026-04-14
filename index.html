@@ -2249,7 +2249,7 @@ const WEB3FORMS_ACCESS_KEY = "59117c77-b38b-4819-96de-22e7f76a5d9f";
 
 // Set access key on load
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('web3formsKey').value = WEB3FORMS_ACCESS_KEY;
+  document.getElementById('web3formsKey').value = 59117c77-b38b-4819-96de-22e7f76a5d9f;
 });
 
 // Header scroll effect
@@ -2335,7 +2335,7 @@ contactForm.addEventListener('submit', async function(e) {
       showStatus('success', '✅ Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.');
       contactForm.reset();
       // Access key'i tekrar ayarla (form reset sonrası)
-      document.getElementById('web3formsKey').value = WEB3FORMS_ACCESS_KEY;
+      document.getElementById('web3formsKey').value = 59117c77-b38b-4819-96de-22e7f76a5d9f;
       
       submitBtn.innerHTML = '✓ Message envoyé !';
       submitBtn.style.background = 'var(--success)';
